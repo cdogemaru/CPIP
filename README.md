@@ -32,7 +32,7 @@ This program is implemented with `Python 3.6`, and all the requirements are list
 
 - After running the program, the result will be show in the following figure:
 
-  ![image](./fig/result.jpg)
+  ![image](./fig/result.png)
 
 - This figure shows how the anomaly score of the samples varies before and after the DDoS attack, it can be seen that the anomaly scores increase dramatically after the DDoS happens.
 

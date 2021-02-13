@@ -12,7 +12,6 @@ class DBN_AE:
         
         self.n_trained = 0 # the number of training instances so far
         self.n_executed = 0 # the number of executed instances so far
-        self.dbn_batch = 10000
         self.dbn_layers = dbn_layers
         self.AE_dim = dbn_layers[-1]
         self.__createDBN__()
@@ -27,11 +26,11 @@ class DBN_AE:
 
     def __createDBN__(self):
         self.FM = UnsupervisedDBN(hidden_layers_structure=self.dbn_layers,
-                                         batch_size=512,
-                                         learning_rate_rbm=0.3,
+                                         batch_size=64,
+                                         learning_rate_rbm=0.2,
                                          n_epochs_rbm=64,
                                          activation_function='sigmoid',
-                                         verbose=False)
+                                         verbose=True)
 
     def process(self,x):
         if self.n_trained < self.FM_grace_period + self.AD_grace_period:
@@ -42,7 +41,7 @@ class DBN_AE:
 
     def train_FM(self, x):
         self.fvs.append(x)
-        if len(self.fvs) == self.dbn_batch:
+        if len(self.fvs) == self.FM_grace_period:
             xx = np.array(self.fvs)
             self.FM.fit(xx)
             self.fvs.clear()
@@ -55,7 +54,10 @@ class DBN_AE:
             self.AE.train(S_l1)
         self.n_trained += 1
         if self.n_trained == self.AD_grace_period+self.FM_grace_period:
-                print("Deep Belief Network: execute-mode, Auto-Encoder: train-mode")
+            print("Deep Belief Network: execute-mode, Auto-Encoder: execute-mode")
+        elif self.n_trained == self.FM_grace_period:
+            print("Deep Belief Network: execute-mode, Auto-Encoder: train-mode")
+
 
     def execute(self,x):
         self.n_executed += 1

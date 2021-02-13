@@ -221,10 +221,11 @@ class FE:
     def feature_extract(self):
         fvs = []
         cnt = 0
+        print("Start Feature Extracting. ")
         while(True):
             cnt += 1
             if cnt % 10000 == 0:
-                print("Finished Feature Extracting for %s pkts." % cnt)
+                print(cnt)
             x = self.get_next_vector()
             if len(x) == 0:
                 break

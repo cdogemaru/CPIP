@@ -56,8 +56,6 @@ scores[:100000] = 2 * np.exp(10 * prms[:100000])
 scores[100000:] = np.exp(10 * prms[100000:]) + 2 * np.exp(10 * plts[100000:])
 index = np.array(range(len(scores)))
 
-np.save("scores.npy", scores)
-
 benignSample = np.log(scores[:50000])
 logProbs = norm.logsf(np.log(scores), np.mean(
     benignSample), np.std(benignSample))
